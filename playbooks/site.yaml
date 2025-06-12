@@ -1,0 +1,36 @@
+---
+- name: Deploy Homelab Infrastructure
+  hosts: homelab
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      tags: always
+  roles:
+    - role: common
+      tags: common
+    - role: docker
+      tags: docker
+#     - role: services
+#       tags: services
+#     - role: monitoring
+#       tags: monitoring
+#       when: services.grafana.enabled or services.prometheus.enabled
+
+#   post_tasks:
+#     - name: Display service URLs
+#       debug:
+#         msg: |
+#           🎉 Homelab deployment complete!
+
+#           Access your services at:
+#           {% for service, config in services.items() %}
+#           {% if config.enabled %}
+#           - {{ service | title }}: http://{{ ansible_default_ipv4.address }}:{{ config.port }}
+#           {% endif %}
+#           {% endfor %}
+#       tags: always

@@ -1,0 +1,33 @@
+homelab:
+  hosts:
+    homelab-server:
+      ansible_host: 192.168.29.197
+      ansible_user: anon
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+  vars:
+    homelab_user: anon
+    homelab_domain: homelab.local
+    
+    # ansible_python_interpreter: /usr/bin/python3
+  #   docker_compose_version: "2.21.0"
+
+  #   # Service configuration
+  #   services:
+  #     portainer:
+  #       enabled: true
+  #       port: 9000
+  #     jellyfin:
+  #       enabled: true
+  #       port: 8096
+  #     nextcloud:
+  #       enabled: true
+  #       port: 8080
+  #     homeassistant:
+  #       enabled: false
+  #       port: 8123
+  #     grafana:
+  #       enabled: true
+  #       port: 3000
+  #     prometheus:
+  #       enabled: true
+  #       port: 9090

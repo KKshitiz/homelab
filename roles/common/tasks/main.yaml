@@ -1,0 +1,77 @@
+---
+- name: Install essential packages
+  apt:
+    name:
+      - curl
+      - wget
+      # - git
+      - htop
+      - nano
+      - vim
+      # - unzip
+      # - software-properties-common
+      # - apt-transport-https
+      # - ca-certificates
+      # - gnupg
+      # - lsb-release
+      # - python3-pip
+      # - python3-docker
+    state: present
+    update_cache: yes
+
+# - name: Create homelab directory structure
+#   file:
+#     path: "{{ item }}"
+#     state: directory
+#     owner: "{{ homelab_user }}"
+#     group: "{{ homelab_user }}"
+#     mode: "0755"
+#   loop:
+#     - /opt/homelab
+#     - /opt/homelab/data
+#     - /opt/homelab/configs
+#     - /opt/homelab/backups
+#     - /opt/homelab/logs
+
+# - name: Set timezone
+#   timezone:
+#     name: "{{ timezone | default('UTC') }}"
+
+- name: Configure automatic security updates
+  apt:
+    name: unattended-upgrades
+    state: present
+
+- name: Enable automatic security updates
+  debconf:
+    name: unattended-upgrades
+    question: unattended-upgrades/enable_auto_updates
+    value: "true"
+    vtype: boolean
+
+- name: Configure UFW firewall
+  block:
+    - name: Install UFW
+      apt:
+        name: ufw
+        state: present
+
+    - name: Allow SSH
+      ufw:
+        rule: allow
+        port: "22"
+        proto: tcp
+
+    # - name: Allow service ports
+    #   ufw:
+    #     rule: allow
+    #     port: "{{ item.value.port }}"
+    #     proto: tcp
+    #   loop: "{{ services | dict2items }}"
+    #   when: item.value.enabled
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
+        policy: deny
+        direction: incoming

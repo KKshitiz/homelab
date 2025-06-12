@@ -1,0 +1,51 @@
+---
+- name: Create main docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/homelab/docker-compose.yml
+    owner: "{{ homelab_user }}"
+    group: "{{ homelab_user }}"
+    mode: '0644'
+  notify: restart homelab services
+
+- name: Create environment file
+  template:
+    src: .env.j2
+    dest: /opt/homelab/.env
+    owner: "{{ homelab_user }}"
+    group: "{{ homelab_user }}"
+    mode: '0600'
+  notify: restart homelab services
+
+- name: Create service-specific config directories
+  file:
+    path: "/opt/homelab/configs/{{ item.key }}"
+    state: directory
+    owner: "{{ homelab_user }}"
+    group: "{{ homelab_user }}"
+    mode: '0755'
+  loop: "{{ services | dict2items }}"
+  when: item.value.enabled
+
+- name: Deploy service configurations
+  include_tasks: "{{ item.key }}.yml"
+  loop: "{{ services | dict2items }}"
+  when: item.value.enabled
+
+- name: Start homelab services
+  docker_compose:
+    project_src: /opt/homelab
+    state: present
+    pull: yes
+  become_user: "{{ homelab_user }}"
+
+- name: Enable homelab services autostart
+  template:
+    src: homelab.service.j2
+    dest: /etc/systemd/system/homelab.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: 
+    - reload systemd
+    - enable homelab service
