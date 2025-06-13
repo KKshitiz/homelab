@@ -15,8 +15,8 @@
       tags: common
     - role: docker
       tags: docker
-#     - role: services
-#       tags: services
+    - role: services
+      tags: services
 #     - role: monitoring
 #       tags: monitoring
 #       when: services.grafana.enabled or services.prometheus.enabled

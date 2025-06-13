@@ -1,0 +1,47 @@
+---
+- name: Create docker-compose directory
+  file:
+    path: /opt/homelab
+    state: directory
+    owner: "{{ homelab_user }}"
+    group: "{{ homelab_user }}"
+    mode: "0755"
+
+- name: Copy docker-compose.yaml
+  copy:
+    src: docker-compose.yaml
+    dest: /opt/homelab/docker-compose.yaml
+    owner: "{{ homelab_user }}"
+    group: "{{ homelab_user }}"
+    mode: "0644"
+  # notify: restart homelab services
+
+- name: Create config directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ homelab_user }}"
+    group: "{{ homelab_user }}"
+    mode: "0755"
+  loop:
+    - /opt/homelab/configs
+    - /opt/homelab/configs/prometheus
+    - /opt/homelab/configs/alertmanager
+
+- name: Copy configurations
+  copy:
+    src: "{{ item }}"
+    dest: /opt/homelab/configs
+    owner: "{{ homelab_user }}"
+    group: "{{ homelab_user }}"
+    mode: "0644"
+  loop:
+    - ./configs/prometheus
+    - ./configs/alertmanager
+  # notify: restart homelab services
+
+- name: Start homelab services
+  community.docker.docker_compose_v2:
+    project_src: /opt/homelab
+    state: present
+  become_user: "{{ homelab_user }}"

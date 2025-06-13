@@ -1,0 +1,166 @@
+# Global configuration
+global:
+  # The smarthost and SMTP sender used for mail notifications.
+  smtp_smarthost: "localhost:587"
+  smtp_from: "alertmanager@homelab.local"
+  smtp_auth_username: "alertmanager@homelab.local"
+  smtp_auth_password: "your-email-password"
+  smtp_require_tls: true
+
+  # The default HTTP client configuration
+  http_config:
+    tls_config:
+      insecure_skip_verify: false
+
+  # ResolveTimeout is the default value used by alertmanager if the alert does
+  # not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated.
+  resolve_timeout: 3m
+
+# Files from which custom notification template definitions are read.
+templates:
+  - "/etc/alertmanager/templates/*.tmpl"
+
+# The root route on which each alert enters.
+route:
+  # The labels by which incoming alerts are grouped together.
+  group_by: ["alertname", "cluster", "service"]
+
+  # When a new group of alerts is created by an incoming alert, wait at
+  # least 'group_wait' to send the initial notification.
+  group_wait: 10s
+
+  # When the first notification was sent, wait 'group_interval' to send a batch
+  # of new alerts that started firing for that group.
+  group_interval: 10s
+
+  # If an alert has successfully been sent, wait 'repeat_interval' to
+  # resend them.
+  repeat_interval: 1h
+
+  # A default receiver
+  receiver: web.hook.default
+
+  # All the above attributes are inherited by all child routes and can be
+  # overwritten on each.
+  routes:
+    # []
+    # Route for critical alerts
+    - match:
+        severity: critical
+      receiver: web.hook.default
+      group_wait: 5s
+      repeat_interval: 5m
+
+    # # Route for warning alerts
+    # - match:
+    #     severity: warning
+    #   receiver: web.hook.warning
+    #   repeat_interval: 15m
+
+    # # Route for specific services
+    # - match:
+    #     service: nextcloud
+    #   receiver: web.hook.nextcloud
+
+    # - match:
+    #     service: prometheus
+    #   receiver: web.hook.monitoring
+
+    # # Route for infrastructure alerts
+    # - match:
+    #     alertname: InstanceDown
+    #   receiver: web.hook.infrastructure
+    #   group_wait: 5s
+    #   repeat_interval: 5m
+
+# Inhibition rules allow to mute a set of alerts given that another alert is firing.
+inhibit_rules:
+  # Mute any warning-level notifications if the same alert is already critical.
+  - source_match:
+      severity: "critical"
+    target_match:
+      severity: "warning"
+    # Apply inhibition if the alertname is the same.
+    equal: ["alertname", "cluster", "service"]
+
+# Receivers define where notifications are sent to.
+receivers:
+  # Default webhook receiver
+  - name: "web.hook.default"
+    webhook_configs:
+      - url: "http://localhost:5001/webhook"
+        send_resolved: true
+        # title: "Homelab Alert"
+        # text: "Alert: {{ .GroupLabels.alertname }} - {{ .CommonAnnotations.summary }}"
+
+  # Critical alerts receiver
+  # - name: "web.hook.critical"
+  #   email_configs:
+  #     - to: "admin@homelab.local"
+  #       subject: "🚨 CRITICAL: {{ .GroupLabels.alertname }}"
+  #       body: |
+  #         Alert: {{ .GroupLabels.alertname }}
+  #         Summary: {{ .CommonAnnotations.summary }}
+  #         Description: {{ .CommonAnnotations.description }}
+
+  #         Details:
+  #         {{ range .Alerts }}
+  #         - Instance: {{ .Labels.instance }}
+  #         - Severity: {{ .Labels.severity }}
+  #         - Started: {{ .StartsAt }}
+  #         {{ end }}
+  #   webhook_configs:
+  #     - url: "http://localhost:5001/webhook/critical"
+  #       send_resolved: true
+
+  # Warning alerts receiver
+  # - name: "web.hook.warning"
+  #   email_configs:
+  #     - to: "admin@homelab.local"
+  #       subject: "⚠️  WARNING: {{ .GroupLabels.alertname }}"
+  #       body: |
+  #         Alert: {{ .GroupLabels.alertname }}
+  #         Summary: {{ .CommonAnnotations.summary }}
+  #         Description: {{ .CommonAnnotations.description }}
+
+  #         Details:
+  #         {{ range .Alerts }}
+  #         - Instance: {{ .Labels.instance }}
+  #         - Severity: {{ .Labels.severity }}
+  #         - Started: {{ .StartsAt }}
+  #         {{ end }}
+
+  # # Nextcloud specific receiver
+  # - name: "web.hook.nextcloud"
+  #   webhook_configs:
+  #     - url: "http://localhost:5001/webhook/nextcloud"
+  #       send_resolved: true
+
+  # # Monitoring specific receiver
+  # - name: "web.hook.monitoring"
+  #   webhook_configs:
+  #     - url: "http://localhost:5001/webhook/monitoring"
+  #       send_resolved: true
+
+  # Infrastructure receiver
+  # - name: "web.hook.infrastructure"
+  #   webhook_configs:
+  #     - url: "http://localhost:5001/webhook/infrastructure"
+  #       send_resolved: true
+  #   email_configs:
+  #     - to: "admin@homelab.local"
+  #       subject: "🔧 Infrastructure Alert: {{ .GroupLabels.alertname }}"
+  #       body: |
+  #         Infrastructure Alert: {{ .GroupLabels.alertname }}
+
+  #         {{ range .Alerts }}
+  #         Instance: {{ .Labels.instance }}
+  #         Job: {{ .Labels.job }}
+  #         Severity: {{ .Labels.severity }}
+
+  #         Summary: {{ .Annotations.summary }}
+  #         Description: {{ .Annotations.description }}
+
+  #         Started: {{ .StartsAt }}
+  #         {{ if .EndsAt }}Ended: {{ .EndsAt }}{{ end }}
+  #         {{ end }}

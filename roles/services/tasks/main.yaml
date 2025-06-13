@@ -1,4 +1,29 @@
-# ---
+---
+# - name: Create homelab data directory
+#   file:
+#     path: "{{ item }}"
+#     state: directory
+#     owner: "{{ homelab_user }}"
+#     group: "{{ homelab_user }}"
+#     mode: "0755"
+#   loop:
+#     # Main directories
+#     - "/srv/homelab"
+#     - "/srv/homelab/configs"
+#     - "/srv/homelab/backups"
+
+#     # Data directories
+#     - "/srv/homelab/data"
+#     - "/srv/homelab/data/nextcloud"
+
+#     # Media subdirectories
+#     - "/srv/homelab/media"
+#     - "/srv/homelab/media/movies"
+#     - "/srv/homelab/media/tv"
+#     - "/srv/homelab/media/music"
+#     - "/srv/homelab/media/books"
+#     - "/srv/homelab/media/games"
+#     - "/srv/homelab/media/other"
 # - name: Create main docker-compose file
 #   template:
 #     src: docker-compose.yml.j2
