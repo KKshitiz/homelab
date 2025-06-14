@@ -40,8 +40,32 @@
     - ./configs/alertmanager
   # notify: restart homelab services
 
+- name: Stop all services
+  community.docker.docker_compose_v2:
+    project_src: /opt/homelab
+    state: stopped
+  become_user: "{{ homelab_user }}"
+
 - name: Start homelab services
   community.docker.docker_compose_v2:
     project_src: /opt/homelab
     state: present
   become_user: "{{ homelab_user }}"
+
+- name: Verify all services are running
+  community.docker.docker_compose_v2:
+    project_src: /opt/homelab
+    state: present
+  register: compose_status
+  become_user: "{{ homelab_user }}"
+
+- name: Verify that services are running
+  ansible.builtin.assert:
+    that:
+      - prometheus_container.State == 'running'
+      - grafana_container.State == 'running'
+  vars:
+    prometheus_container: >-
+      {{ compose_status.containers | selectattr("Service", "equalto", "prometheus") | first }}
+    grafana_container: >-
+      {{ compose_status.containers | selectattr("Service", "equalto", "grafana") | first }}
