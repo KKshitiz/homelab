@@ -1,0 +1,38 @@
+---
+title: Homelab Dashboard
+favicon: https://img.icons8.com/?size=100&id=9460&format=png&color=000000
+background: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+theme: dark # Options: light, dark
+color: slate # Options: slate, gray, zinc, neutral, stone, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
+
+headerStyle: clean # Options: underlined, boxed, clean
+hideVersion: true
+
+layout:
+  Media & Cloud:
+    style: row
+    columns: 2
+  Monitoring:
+    style: row
+    columns: 3
+  Infrastructure:
+    style: row
+    columns: 2
+  System:
+    style: row
+    columns: 4
+
+providers:
+  openweathermap: b534a757dda50a521cdfbf365fc12003
+  unifi:
+    username: YOUR_UNIFI_USERNAME
+    password: YOUR_UNIFI_PASSWORD
+    url: https://YOUR_UNIFI_URL
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  hideVisitURL: true
+
+fiveColumns: true
+showStats: true

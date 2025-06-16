@@ -8,3 +8,6 @@ collections:
   # General utilities
   - name: community.general
     version: ">=6.0.0"
+
+  - name: ansible.posix
+    version: ">=2.0.0"

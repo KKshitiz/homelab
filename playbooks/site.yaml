@@ -1,6 +1,6 @@
 ---
 - name: Deploy Homelab Infrastructure
-  hosts: homelab
+  hosts: kubernetes-control-planes
   become: true
   gather_facts: true
 
@@ -13,10 +13,12 @@
   roles:
     - role: common
       tags: common
-    - role: docker
-      tags: docker
-    - role: services
-      tags: services
+    # - role: docker
+    #   tags: docker
+    # - role: services
+    #   tags: services
+    - role: kubernetes
+      tags: kubernetes
 #     - role: monitoring
 #       tags: monitoring
 #       when: services.grafana.enabled or services.prometheus.enabled

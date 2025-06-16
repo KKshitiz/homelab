@@ -1,0 +1,114 @@
+---
+- Monitoring:
+    - Grafana:
+        icon: grafana.png
+        href: http://grafana.homelab.local
+        description: Analytics & Monitoring Dashboards
+        # server: grafana
+        # container: grafana
+        widget:
+          type: grafana
+          url: http://grafana:3000
+          username: admin
+          password: admin123!
+
+    - Prometheus:
+        icon: prometheus.png
+        href: http://prometheus.homelab.local
+        description: Metrics Collection & Alerting
+        # server: prometheus
+        # container: prometheus
+        widget:
+          type: prometheus
+          url: http://prometheus:9090
+
+    - Alertmanager:
+        icon: alertmanager.png
+        href: http://alertmanager.homelab.local
+        description: Alert Management
+        # server: alertmanager
+        # container: alertmanager
+        widget:
+          type: alertmanager
+          url: http://alertmanager:9093
+
+    # - Node Exporter:
+    #     icon: prometheus.png
+    #     href: http://node-exporter.homelab.local:9100
+    #     description: System Metrics Export
+    #     server: node_exporter
+    #     container: node_exporter
+
+- Infrastructure:
+    - Traefik:
+        icon: traefik.png
+        href: http://traefik.homelab.local
+        description: Reverse Proxy & Load Balancer
+        # server: traefik
+        # container: traefik
+        widget:
+          type: traefik
+          url: http://traefik:8080
+
+    - Portainer:
+        icon: portainer.png
+        href: http://portainer.homelab.local
+        description: Docker Container Management
+        # server: portainer
+        # container: portainer
+        widget:
+          type: portainer
+          url: http://portainer:9000
+          env: 3
+          key: ptr_v4wsq9nfpTkzx9hNlDvwFH0hHeNDq6eOdDar3SpXGms=
+
+- Media & Cloud:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: http://jellyfin.homelab.local
+        description: Media Streaming Server
+        # server: jellyfin
+        # container: jellyfin
+        widget:
+          type: jellyfin
+          url: http://jellyfin:8096
+          key: afef456bf12f43a79bcaf84cfc46ecf3
+          enableBlocks: true
+          enableNowPlaying: true
+
+    - Nextcloud:
+        icon: nextcloud.png
+        href: http://nextcloud.homelab.local
+        description: Private Cloud Storage
+        # server: nextcloud
+        # container: nextcloud
+        widget:
+          type: nextcloud
+          url: http://nextcloud:80
+          username: admin
+          password: admin1234567
+
+- System:
+    - System Monitor:
+        widget:
+          type: resources
+          cpu: true
+          memory: true
+          disk: /
+          cputemp: true
+          uptime: true
+          units: metric
+          refresh: 3000
+
+    # - Glances:
+    #     widget:
+    #       type: glances
+    #       url: http://localhost:61208
+    #       username: admin
+    #       password: admin
+    #       version: 4
+
+    # - Disk Usage:
+    #     widget:
+    #       type: diskstation
+    #       host: localhost

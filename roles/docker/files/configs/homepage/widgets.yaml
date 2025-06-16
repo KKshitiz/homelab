@@ -1,0 +1,64 @@
+---
+- logo:
+      icon: https://img.icons8.com/?size=100&id=9460&format=png&color=000000
+
+- greeting:
+      text_size: xl
+      text: "Welcome to Your Homelab! 🚀"
+
+- search:
+      provider: [duckduckgo, google]
+      focus: false
+      target: _blank
+
+- resources:
+      #   backend: resources
+      #   expanded: true
+      cpu: true
+      memory: true
+      cputemp: true
+      uptime: true
+      units: metric
+      refresh: 3000
+      diskUnits: bytes
+
+- unifi_console:
+      url: https://YOUR_UNIFI_URL
+      username: YOUR_USERNAME
+      password: YOUR_PASSWORD
+
+- openweathermap:
+      label: Home
+      latitude: 12.996373677762223
+      longitude: 77.75818254565297
+      units: metric
+      provider: openweathermap
+      apiKey: b534a757dda50a521cdfbf365fc12003
+
+- datetime:
+      text_size: l
+      format:
+          timeStyle: short
+          dateStyle: short
+          hourCycle: h23
+
+- openmeteo:
+      label: Weather
+      latitude: YOUR_LATITUDE
+      longitude: YOUR_LONGITUDE
+      timezone: America/New_York
+      units: metric
+      cache: 5
+
+- glances:
+      url: http://localhost:61208
+      username: admin
+      password: admin
+      version: 4
+      metric: info
+      chart: false
+      pointsLimit: 15
+
+- docker:
+      server: docker
+      showStopped: false

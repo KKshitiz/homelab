@@ -175,7 +175,7 @@ services:
     container_name: homepage
     restart: unless-stopped
     volumes:
-      - homepage_data:/app/config
+      - ./configs/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - HOMEPAGE_ALLOWED_HOSTS=homelab.local
@@ -203,8 +203,7 @@ volumes:
 # - qbittorrent
 # - radarr
 # - sonarr
-# - grafana + prometheus + alertmanager
-# - pihold
+# - pihole
 # - openvpn
 # - codeserver
 # - gitlab

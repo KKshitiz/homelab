@@ -1,0 +1,19 @@
+- name: Setup worker node TCP ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+    direction: in
+  loop:
+    - 10250
+    - 10256
+    - 30000:32767
+
+- name: Setup worker node UDP ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: udp
+    direction: in
+  loop:
+    - 30000:32767

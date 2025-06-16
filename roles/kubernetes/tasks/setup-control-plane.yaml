@@ -1,0 +1,12 @@
+- name: Setup control plane ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+    direction: in
+  loop:
+    - 6443
+    - 2379:2380
+    - 10250
+    - 10259
+    - 10257
