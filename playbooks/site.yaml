@@ -1,6 +1,6 @@
 ---
 - name: Deploy Homelab Infrastructure
-  hosts: kubernetes-control-planes
+  hosts: kubernetes
   become: true
   gather_facts: true
 

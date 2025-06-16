@@ -8,6 +8,11 @@ homelab:
     homelab_user: anon
     homelab_domain: homelab.local
 
+kubernetes:
+  children:
+    kubernetes-control-planes:
+    kubernetes-worker-nodes:
+
 kubernetes-control-planes:
   hosts:
     control-node-1:
