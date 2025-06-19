@@ -29,6 +29,10 @@ kubernetes-worker-nodes:
       ansible_host: 192.168.29.74
       ansible_user: anton
       ansible_ssh_private_key_file: ~/.ssh/id_rsa
+    worker-node-2:
+      ansible_host: 192.168.29.213
+      ansible_user: anton
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
   vars:
     # ansible_python_interpreter: /usr/bin/python3
   #   docker_compose_version: "2.21.0"

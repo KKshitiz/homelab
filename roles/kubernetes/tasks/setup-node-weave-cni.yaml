@@ -1,0 +1,13 @@
+- name: Setup node TCP ports for weave-cni
+  ufw:
+    rule: allow
+    port: 6783
+    proto: tcp
+    direction: in
+
+- name: Setup node UDP ports for weave-cni
+  ufw:
+    rule: allow
+    port: 6783:6784
+    proto: udp
+    direction: in
