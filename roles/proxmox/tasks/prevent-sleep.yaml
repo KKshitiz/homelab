@@ -1,0 +1,24 @@
+---
+- name: Ensure systemd lid switch settings are configured
+  lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: '^#?HandleLidSwitch=.*'
+    line: 'HandleLidSwitch=ignore'
+    state: present
+  notify: Restart logind
+
+- name: Ensure HandleLidSwitchDocked is configured
+  lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: '^#?HandleLidSwitchDocked=.*'
+    line: 'HandleLidSwitchDocked=ignore'
+    state: present
+  notify: Restart logind
+
+- name: Ensure HandleLidSwitchExternalPower is configured
+  lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: '^#?HandleLidSwitchExternalPower=.*'
+    line: 'HandleLidSwitchExternalPower=ignore'
+    state: present
+  notify: Restart logind

@@ -1,2 +1,3 @@
 ---
-- name: Disable 
+- include_tasks: prevent-sleep.yaml
+- include_tasks: configure-apt-repositories.yaml
